@@ -1,0 +1,39 @@
+% !TeX root = ../main.tex
+
+\ustcsetup{
+  keywords = {
+      移动机器人, 阿克曼底盘，多层级导航系统, ORCA避障, 建图定位，路径规划，激光雷达
+    },
+  keywords* = {
+    Mobile robot, Ackerman chassis, multi-level navigation system, ORCA obstacle avoidance, mapping positioning, path planning, laser radar
+    },
+}
+
+\begin{abstract}
+  移动机器人导航系统是机器人技术领域的重要研究方向之一，其核心目标是使得移动机器人能够在未知或部分已知环境下自主地感知周围环境并且规划路径，以达到预定目标。该系统通常由传感器、地图构建、路径规划、运动控制和局部避障等模块组成，以实现机器人的准确定位、路径规划、避障和运动控制等功能。本着“理论结合工程”的原则，在工程中发现问题，解决问题，最终实现园区场景下安全无人配送。这对师生的实际需求拥有重要意义。
+  本文的主要研究内容是面向园区场景的移动机器人多层级导航系统设计与工程实现，目标是实现移动机器人在园区场景下完成自主导航任务。园区有两大特征：宽广但封闭；动态区域多。此目标要求移动机器人根据先验地图信息与任务需求，自主定位并规划路径、移动避障，最终安全到达指定目的地。本文的主要工作概述如下：
+  
+  1. 以实验室阿克曼底盘为基础，研究了一种多层级的导航方法，并据此0-1从上至下设计出一套多层级移动机器人自主导航系统，该系统根据在导航任务的规划的先后顺序以及与硬件系统的交互逻辑划分成两个子系统层级，分别称为高层导航和底层导航。高层导航的任务目标是根据发布的任务目标点，运用 RTK 实现自身定位，在事先构建的园区地图上规划出当前位置与终点之间的全局路径，并且将路径信息——一系列路径点下发给底层导航。其中先验地图的构建使用自采点云数据集通过一系列点云处理算法进行后期处理，得到可供导航系统使用的多层地图——点云、栅格、拓扑地图。以A*算法和系统相适应，最终完成整体高层导航的任务。
+  
+  底层导航的任务目标是根据高层导航的规划结果，以激光雷达实时获取周围环境信息，实现自我定位，在点云环境中实现局部规划，通过简单避障逻辑，避开障碍物，到达指定点，逐次循环，直至循迹至高层导航规划路径点的最后一个，整个导航任务完成。此多层级导航系统优点突出，以高层为底层做指引，防止底层导航算法因局部最优解陷入全局场景下的“迷宫陷阱”，并且以多模块方式进行设计，子系统之间的配合紧密，同时可实现系统的后续优化等工作。
+
+  2. 在上述系统设计的基础之上，面对园区场景测试过程中面临的多动态障碍物与部分场景狭小导致的底层避障算法不能胜任的困难，从而致使整个系统园区内运行不鲁棒的问题，以 ORCA（Optimal Reciprocal Collision Avoidance）为算法基础，结合阿克曼型移动机器人模型约束，并结合目前的导航系统框架中基于运动元的局部规划方法，实现了园区场景下多动态场景的自适应避障。经此算法规划出的移动机器人路径在穿越多个移动障碍物区域时，可保持路径最优且系统鲁棒。
+
+  3. 根据系统的设计方法与思路，结合成本、性能等多方面考虑，搭建了移动机器人导航系统的硬件体系，并且在校园场景下进行多次测试和实验，验证了系统的功能性和鲁棒性。结合系统的运行逻辑，阐述了当前移动机器人导航系统的信息流向和内部工作原理，深刻论证当前系统的优点与在园区场景下的导航能力。
+  
+  
+
+  
+\end{abstract}
+
+\begin{abstract*}
+  Mobile robot navigation system is one of the important research directions in the field of robotics. Its core goal is to enable mobile robots to autonomously perceive the surrounding environment and plan paths in unknown or partially known environments to achieve predetermined goals. The system is usually composed of modules such as sensors, map construction, path planning, motion control, and local obstacle avoidance to realize functions such as accurate positioning, path planning, obstacle avoidance, and motion control of the robot. In line with the principle of "combining theory with engineering", problems are found and solved in the engineering, and finally realize safe unmanned delivery in the park scene. This is of great significance to the actual needs of teachers and students.
+
+  The main research content of this paper is the design and engineering implementation of the multi-level navigation system for mobile robots in the park scene. The goal is to realize the autonomous navigation tasks of mobile robots in the park scene. This goal requires the mobile robot to autonomously locate and plan paths, move to avoid obstacles, and finally reach the designated destination safely according to prior map information and task requirements. The main work of this paper is summarized as follows:
+
+  1. Based on the Ackerman chassis of the laboratory, a set of multi-level mobile robot autonomous navigation system is designed from top to bottom. The system levels are called high-level navigation and bottom-level navigation respectively. The task goal of high-level navigation is to use RTK to realize self-positioning based on the released task target points, plan the global path between the current location and the end point on the pre-constructed park map, and send the path information—a series of path points For the bottom-level navigation; the task goal of the bottom-level navigation is to obtain the surrounding environment information in real time with the laser radar according to the planning results of the high-level navigation, realize self-positioning, realize local planning in the point cloud environment, and avoid obstacles through simple obstacle avoidance logic. Arrive at the designated point, cycle successively until the last one of the high-level navigation planning path point is traced, and the entire navigation task is completed. This multi-level navigation system has outstanding advantages. It uses the high-level as the bottom-level guidance to prevent the bottom-level navigation algorithm from falling into the "maze trap" in the global scene due to local optimal solutions. It is designed in a multi-module manner, and the cooperation between subsystems is close. At the same time, the follow-up optimization of the system can be realized.
+
+  2. On the basis of the above system design, in the face of multi-dynamic obstacles in the test process in the park scene and the narrowness of some scenes, the underlying algorithm planning fell into a "dead end", resulting in the problem of unrobust operation of the entire system park , based on the ORCA (Optimal Reciprocal Collision Avoidance) algorithm, combined with the Ackermann-type mobile robot model constraints, and combined with the current navigation system framework, the adaptive obstacle avoidance and local planning optimization of multi-dynamic scenes in the park scene are realized. untie. The path of the mobile robot planned by this algorithm keeps the path optimal and robust when passing through multiple moving obstacle areas.
+
+  3. According to the design method and idea of the system, combined with cost, performance and other considerations, the hardware system of the mobile robot navigation system was built, and multiple tests and experiments were carried out in the campus scene to verify the functionality and robustness of the system sex. Combined with the operating logic of the system, the information flow and internal working principle of the current mobile robot navigation system are expounded, and the advantages of the current system and the specific performance in the park scene are deeply demonstrated.
+\end{abstract*}
